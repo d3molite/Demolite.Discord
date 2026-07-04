@@ -1,0 +1,30 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demolite.Discord.Core", "Demolite.Discord.Core\Demolite.Discord.Core.csproj", "{C44771DF-761D-48D1-B20B-F582138AE75E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demolite.Discord.Bot.Test", "Demolite.Discord.Bot.Test\Demolite.Discord.Bot.Test.csproj", "{AEE41F3C-0FD2-4068-AB8F-79D69118146D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core Code", "Core Code", "{E4D9073D-2763-4394-B2C0-B82F28F9BC10}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Instances", "Instances", "{587A31CA-1162-4CD6-B3AE-2FF268266297}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C44771DF-761D-48D1-B20B-F582138AE75E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C44771DF-761D-48D1-B20B-F582138AE75E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C44771DF-761D-48D1-B20B-F582138AE75E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C44771DF-761D-48D1-B20B-F582138AE75E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AEE41F3C-0FD2-4068-AB8F-79D69118146D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AEE41F3C-0FD2-4068-AB8F-79D69118146D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AEE41F3C-0FD2-4068-AB8F-79D69118146D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AEE41F3C-0FD2-4068-AB8F-79D69118146D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{C44771DF-761D-48D1-B20B-F582138AE75E} = {E4D9073D-2763-4394-B2C0-B82F28F9BC10}
+		{AEE41F3C-0FD2-4068-AB8F-79D69118146D} = {587A31CA-1162-4CD6-B3AE-2FF268266297}
+	EndGlobalSection
+EndGlobal

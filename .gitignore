@@ -1,0 +1,13 @@
+bin/
+obj/
+/packages/
+
+
+# JETBRAINS
+**/.idea/**
+riderModule.iml
+/_ReSharper.Caches/
+*.DotSettings.user
+
+# SECURITY
+**/appsettings.json
