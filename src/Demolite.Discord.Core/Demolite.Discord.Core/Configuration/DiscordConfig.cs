@@ -29,4 +29,8 @@ public class GuildConfig
 	public required ulong LogDefault { get; set; }
 	
 	public required ulong LogCritical { get; set; }
+	
+	public ulong? HoneyPotChannelId { get; set; }
+	
+	public string LoggingCulture { get; set; }
 }

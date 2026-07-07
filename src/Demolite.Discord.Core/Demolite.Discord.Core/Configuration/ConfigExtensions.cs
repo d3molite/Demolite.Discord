@@ -13,10 +13,13 @@ public static class ConfigExtensions
 		public void GetAndRegisterConfigs()
 		{
 			var config = builder.GetDiscordConfig();
-			var guilds = builder.GetGuildConfigs();
+			var guilds = builder.GetGuildConfigs().ToArray();
+
+			var guildsDict = guilds.ToDictionary(g => g.Id, g => g);
 
 			builder.Services.AddSingleton(config);
 			builder.Services.AddSingleton(guilds);
+			builder.Services.AddSingleton(guildsDict);
 		}
 
 		public ConfigurationSettings GetDiscordConfig()

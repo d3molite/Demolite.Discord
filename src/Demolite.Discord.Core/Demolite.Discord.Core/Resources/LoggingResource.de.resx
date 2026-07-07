@@ -1,0 +1,101 @@
+<root>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>1.3</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <data name="Header_MessageDeleted" xml:space="preserve">
+        <value>Nachricht gelöscht</value>
+    </data>
+    <data name="Body_MessageDeleted" xml:space="preserve">
+        <value>Eine Nachricht von {0} wurde im Kanal &lt;#{1}&gt; gelöscht.</value>
+    </data>
+    <data name="Header_Content" xml:space="preserve">
+        <value>Inhalt:</value>
+    </data>
+    <data name="Body_MessageDeleted_NotFound" xml:space="preserve">
+        <value>Eine Nachricht wurde in &lt;#{0}&gt; gelöscht, aber der Inhalt konnte nicht aus dem Cache geladen werden.</value>
+    </data>
+    <data name="Header_MessageEdited" xml:space="preserve">
+        <value>Nachricht bearbeitet</value>
+    </data>
+    <data name="Body_MessageEdited" xml:space="preserve">
+        <value>Eine Nachricht von {0} wurde bearbeitet.</value>
+    </data>
+    <data name="Header_MessageEdited_OriginalMessage" xml:space="preserve">
+        <value>Originale Nachricht:</value>
+    </data>
+    <data name="Header_MessageEdited_NewMessage" xml:space="preserve">
+        <value>Neue Nachricht:</value>
+    </data>
+    <data name="Header_Actions" xml:space="preserve">
+        <value>Aktionen:</value>
+    </data>
+    <data name="Body_MessageEdited_NotFound" xml:space="preserve">
+        <value>Der Inhalt konnte nicht aus dem Cache geladen werden.</value>
+    </data>
+    <data name="Body_Actions_LinkToMessage" xml:space="preserve">
+        <value>Link zur Nachricht</value>
+    </data>
+    <data name="Header_UserBanned" xml:space="preserve">
+        <value>Nutzer gebannt</value>
+    </data>
+    <data name="Body_UserBanned" xml:space="preserve">
+        <value>{0} wurde vom Server gebannt.</value>
+    </data>
+    <data name="Header_UserBanned_Reason" xml:space="preserve">
+        <value>Grund:</value>
+    </data>
+    <data name="Body_UserBanned_ReasonNotFound" xml:space="preserve">
+        <value>Begründung konnte nicht abgefragt werden.</value>
+    </data>
+    <data name="Header_UserJoined" xml:space="preserve">
+        <value>Nutzer beigetreten</value>
+    </data>
+    <data name="Header_UserLeft" xml:space="preserve">
+        <value>Nutzer verlassen</value>
+    </data>
+    <data name="Body_UserLeft" xml:space="preserve">
+        <value>{0} hat den Server verlassen.</value>
+    </data>
+    <data name="Body_UserJoined" xml:space="preserve">
+        <value>{0} ist dem Server beigetreten.</value>
+    </data>
+    <data name="Header_UserJoined_Age" xml:space="preserve">
+        <value>Alter des Accounts:</value>
+    </data>
+    <data name="Header_UserTimedOut" xml:space="preserve">
+        <value>Nutzer in Timeout versetzt</value>
+    </data>
+    <data name="Body_UserTimedOut" xml:space="preserve">
+        <value>{0} wurde für Spam in den Timeout versetzt.</value>
+    </data>
+    <data name="Header_VoiceDeleted" xml:space="preserve">
+        <value>Sprachkanal gelöscht</value>
+    </data>
+    <data name="Body_VoiceDeleted" xml:space="preserve">
+        <value>{0} wurde wegen Inaktivität gelöscht.</value>
+    </data>
+    <data name="Header_VoiceDeleted_TimeOpen" xml:space="preserve">
+        <value>Channel existierte:</value>
+    </data>
+    <data name="Header_VoiceCreated" xml:space="preserve">
+        <value>Sprachkanal erstellt</value>
+    </data>
+    <data name="Body_VoiceCreated" xml:space="preserve">
+        <value>Sprachkanal {0} wurde erstellt.</value>
+    </data>
+    <data name="Body_Actions_LinkToVoiceChannel" xml:space="preserve">
+        <value>Klicke hier zum Beitreten: &lt;#{0}&gt;</value>
+    </data>
+    <data name="Body_MessageDeleted_Errors" xml:space="preserve">
+        <value>Es fehlen informationen über die gelöschte Nachricht</value>
+    </data>
+</root>

@@ -1,14 +1,17 @@
+using Demolite.Discord.Core.Configuration;
 using NetCord;
 using NetCord.Gateway;
 using NetCord.Rest;
 
 namespace Demolite.Discord.Core.Helpers.AntiSpam;
 
-public class AntiSpamHelper(RestClient restClient, RestGuild guild)
+public class AntiSpamHelper(RestClient restClient, RestGuild guild, GuildConfig[] guildConfigs)
 {
 	private Dictionary<ulong, MessageQueue> _userMessages = [];
 	
 	private readonly List<SpamHandler> _spamHandlers = [];
+
+	private IEnumerable<ulong> HoneyPots => guildConfigs.Where(x => x.HoneyPotChannelId != null).Select(x => x.HoneyPotChannelId!.Value);
 
 	public void CleanupQueues()
 	{
@@ -27,7 +30,7 @@ public class AntiSpamHelper(RestClient restClient, RestGuild guild)
 			AddToRunning(existingHandler, message);
 			return Task.CompletedTask;
 		}
-
+		
 		EnqueueMessage(message);
 		return Task.CompletedTask;
 	}
@@ -47,13 +50,26 @@ public class AntiSpamHelper(RestClient restClient, RestGuild guild)
 		var queue = new MessageQueue(10);
 		queue.Enqueue(message);
 		_userMessages.Add(message.Author.Id, queue);
+		CheckQueueForSpam(queue, message.Author);
 	}
 
 	private void CheckQueueForSpam(MessageQueue queue, User user)
 	{
-		if (!ContainsSpam(queue))
+		if (queue.Queue.Any(IsHoneyPotMessage))
+		{
+			StartSpamHandler(queue, user);
 			return;
+		}
 
+		if (ContainsSpam(queue))
+		{
+			StartSpamHandler(queue, user);
+		}
+		
+	}
+
+	private void StartSpamHandler(MessageQueue queue, User user)
+	{
 		var handler = new SpamHandler(restClient, guild, user, queue);
 		
 		handler.SpamDeleted += Cleanup;
@@ -65,6 +81,9 @@ public class AntiSpamHelper(RestClient restClient, RestGuild guild)
 		if (sender is SpamHandler handler)
 			_spamHandlers.Remove(handler);
 	}
+
+	private bool IsHoneyPotMessage(Message message)
+		=> HoneyPots.Contains(message.ChannelId);
 	
 	private static bool ContainsSpam(MessageQueue queue)
 	{
@@ -79,7 +98,7 @@ public class AntiSpamHelper(RestClient restClient, RestGuild guild)
 			.Any(group => group.Count() > 5);
 		
 		var isSpamByStickers = queue.Queue.Where(message => message.Stickers.Count > 0)
-			.GroupBy(message => message.Stickers.First().Id)
+			.GroupBy(message => message.Stickers[0].Id)
 			.Any(group => group.Count() > 5);
 
 		return isSpamByMessage || isSpamByAttachment || isSpamByStickers;

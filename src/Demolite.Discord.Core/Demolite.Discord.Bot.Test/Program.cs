@@ -30,6 +30,9 @@ builder.Services.AddGatewayHandler<MessageCreateHandler>();
 builder.Services.AddSingleton<ILoggingService, LoggingService>();
 builder.Services.AddGatewayHandler<AntiSpamHandler>();
 builder.Services.AddGatewayHandler<MessageDeleteHandler>();
+builder.Services.AddGatewayHandler<MessageEditHandler>();
+builder.Services.AddGatewayHandler<UserBanAddHandler>();
+builder.Services.AddGatewayHandler<UserBanRemoveHandler>();
 
 var host = builder.Build();
 

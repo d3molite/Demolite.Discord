@@ -1,3 +1,4 @@
+using Demolite.Discord.Core.Configuration;
 using Demolite.Discord.Core.Helpers.AntiSpam;
 using Microsoft.Extensions.Logging;
 using NetCord.Gateway;
@@ -9,18 +10,30 @@ namespace Demolite.Discord.Core.Bot.Handlers;
 public class AntiSpamHandler : IMessageCreateGatewayHandler
 {
 	private readonly RestClient _restClient;
+	private readonly GatewayClient _client;
+	private readonly GuildConfig[] _guildConfigs;
 	private readonly PeriodicTimer _timer = new(TimeSpan.FromMinutes(4));
 	private readonly Dictionary<ulong, AntiSpamHelper> _guildHelpers = new();
 
-	public AntiSpamHandler(ILogger<AntiSpamHandler> logger, RestClient restClient)
+	public AntiSpamHandler(
+		ILogger<AntiSpamHandler> logger,
+		RestClient restClient,
+		GatewayClient client,
+		GuildConfig[] guildConfigs
+	)
 	{
 		_restClient = restClient;
+		_client = client;
+		_guildConfigs = guildConfigs;
 		Task.Run(async () => await Setup());
 		Task.Run(async () => await CleanupQueues());
 	}
 
 	public async ValueTask HandleAsync(Message arg)
 	{
+		if (arg.Author.Id == _client.Id)
+			return;
+
 		if (arg.GuildId is null)
 			return;
 
@@ -32,7 +45,7 @@ public class AntiSpamHandler : IMessageCreateGatewayHandler
 	{
 		await foreach (var guild in _restClient.GetCurrentUserGuildsAsync())
 		{
-			_guildHelpers.Add(guild.Id, new AntiSpamHelper(_restClient, guild));
+			_guildHelpers.Add(guild.Id, new AntiSpamHelper(_restClient, guild, _guildConfigs));
 		}
 	}
 

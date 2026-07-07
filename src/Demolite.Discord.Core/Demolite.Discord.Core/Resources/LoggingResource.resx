@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<root>
+    <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+        <xsd:element name="root" msdata:IsDataSet="true">
+            
+        </xsd:element>
+    </xsd:schema>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>1.3</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <data name="Header_MessageDeleted" xml:space="preserve">
+        <value>Message deleted</value>
+    </data>
+    <data name="Body_MessageDeleted" xml:space="preserve">
+        <value>A message by user {0} has been deleted in &lt;#{1}&gt;.</value>
+    </data>
+    <data name="Header_Content" xml:space="preserve">
+        <value>Content:</value>
+    </data>
+    <data name="Body_MessageDeleted_NotFound" xml:space="preserve">
+        <value>A message was deleted in &lt;#{0}&gt; but the content could not be retrieved from cache.</value>
+    </data>
+    <data name="Header_MessageEdited" xml:space="preserve">
+        <value>Message edited</value>
+    </data>
+    <data name="Body_MessageEdited" xml:space="preserve">
+        <value>A message by user {0} has been edited.</value>
+    </data>
+    <data name="Header_MessageEdited_OriginalMessage" xml:space="preserve">
+        <value>Original message:</value>
+    </data>
+    <data name="Header_MessageEdited_NewMessage" xml:space="preserve">
+        <value>New message:</value>
+    </data>
+    <data name="Header_Actions" xml:space="preserve">
+        <value>Actions:</value>
+    </data>
+    <data name="Body_MessageEdited_NotFound" xml:space="preserve">
+        <value>The content could not be retrieved from cache.</value>
+    </data>
+    <data name="Body_Actions_LinkToMessage" xml:space="preserve">
+        <value>Link to message</value>
+    </data>
+    <data name="Header_UserBanned" xml:space="preserve">
+        <value>User banned</value>
+    </data>
+    <data name="Body_UserBanned" xml:space="preserve">
+        <value>User {0} has been banned from the server.</value>
+    </data>
+    <data name="Header_UserBanned_Reason" xml:space="preserve">
+        <value>Ban reason:</value>
+    </data>
+    <data name="Body_UserBanned_ReasonNotFound" xml:space="preserve">
+        <value>Could not fetch ban reason.</value>
+    </data>
+    <data name="Header_UserLeft" xml:space="preserve">
+        <value>User left</value>
+    </data>
+    <data name="Header_UserJoined" xml:space="preserve">
+        <value>User joined</value>
+    </data>
+    <data name="Body_UserLeft" xml:space="preserve">
+        <value>User {0} has left the server.</value>
+    </data>
+    <data name="Body_UserJoined" xml:space="preserve">
+        <value>User {0} joined the server.</value>
+    </data>
+    <data name="Header_UserJoined_Age" xml:space="preserve">
+        <value>Account age:</value>
+    </data>
+    <data name="Header_UserTimedOut" xml:space="preserve">
+        <value>User timed out</value>
+    </data>
+    <data name="Body_UserTimedOut" xml:space="preserve">
+        <value>User {0} has been timed out for spamming.</value>
+    </data>
+    <data name="Header_VoiceDeleted" xml:space="preserve">
+        <value>Channel deleted</value>
+    </data>
+    <data name="Body_VoiceDeleted" xml:space="preserve">
+        <value>Channel {0} has been deleted due to inactivity.</value>
+    </data>
+    <data name="Header_VoiceDeleted_TimeOpen" xml:space="preserve">
+        <value>Time open:</value>
+    </data>
+    <data name="Header_VoiceCreated" xml:space="preserve">
+        <value>Channel created</value>
+    </data>
+    <data name="Body_VoiceCreated" xml:space="preserve">
+        <value>Voice channel {0} has been created.</value>
+    </data>
+    <data name="Body_Actions_LinkToVoiceChannel" xml:space="preserve">
+        <value>Click here to join: &lt;#{0}&gt;</value>
+    </data>
+    <data name="Body_MessageDeleted_Errors" xml:space="preserve">
+        <value>There were errors with retrieving the message</value>
+    </data>
+</root>
