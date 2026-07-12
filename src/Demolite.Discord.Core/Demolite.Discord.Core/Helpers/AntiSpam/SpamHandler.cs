@@ -1,4 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
+using Demolite.Discord.Core.Interfaces;
 using NetCord;
 using NetCord.Rest;
 using Serilog;
@@ -8,13 +9,15 @@ namespace Demolite.Discord.Core.Helpers.AntiSpam;
 
 public class SpamHandler
 {
+	private readonly ILoggingService _loggingService;
 	private readonly PeriodicTimer _timer = new(TimeSpan.FromSeconds(2));
 	
 	private readonly Dictionary<string, List<string>> _deletedMessages = new();
 
 	[method: SetsRequiredMembers]
-	public SpamHandler(RestClient restClient, RestGuild guild, User user, MessageQueue queue)
+	public SpamHandler(RestClient restClient, RestGuild guild, User user, MessageQueue queue, ILoggingService loggingService)
 	{
+		_loggingService = loggingService;
 		Client = restClient;
 		Guild = guild;
 		User = user;
@@ -32,6 +35,8 @@ public class SpamHandler
 	public required User User { get; init; }
 
 	public required MessageQueue MessageQueue { get; init; }
+	
+	public required ILoggingService Logging { get; init; }
 
 	private IReadOnlyList<IGuildChannel> _channels = [];
 	
@@ -81,6 +86,8 @@ public class SpamHandler
 			{
 				AuditLogReason = $"Spam detected by {(await Client.GetCurrentUserAsync()).Username}"
 			});
+			
+			await _loggingService.LogUserTimedOut(Guild.Id, User);
 		}
 		catch (Exception ex)
 		{

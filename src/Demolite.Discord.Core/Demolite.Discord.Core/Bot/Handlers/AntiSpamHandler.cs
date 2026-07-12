@@ -1,5 +1,6 @@
 using Demolite.Discord.Core.Configuration;
 using Demolite.Discord.Core.Helpers.AntiSpam;
+using Demolite.Discord.Core.Interfaces;
 using Microsoft.Extensions.Logging;
 using NetCord.Gateway;
 using NetCord.Hosting.Gateway;
@@ -14,17 +15,20 @@ public class AntiSpamHandler : IMessageCreateGatewayHandler
 	private readonly GuildConfig[] _guildConfigs;
 	private readonly PeriodicTimer _timer = new(TimeSpan.FromMinutes(4));
 	private readonly Dictionary<ulong, AntiSpamHelper> _guildHelpers = new();
+	private readonly ILoggingService _loggingService;
 
 	public AntiSpamHandler(
 		ILogger<AntiSpamHandler> logger,
 		RestClient restClient,
 		GatewayClient client,
-		GuildConfig[] guildConfigs
+		GuildConfig[] guildConfigs,
+		ILoggingService loggingService
 	)
 	{
 		_restClient = restClient;
 		_client = client;
 		_guildConfigs = guildConfigs;
+		_loggingService = loggingService;
 		Task.Run(async () => await Setup());
 		Task.Run(async () => await CleanupQueues());
 	}
@@ -45,7 +49,7 @@ public class AntiSpamHandler : IMessageCreateGatewayHandler
 	{
 		await foreach (var guild in _restClient.GetCurrentUserGuildsAsync())
 		{
-			_guildHelpers.Add(guild.Id, new AntiSpamHelper(_restClient, guild, _guildConfigs));
+			_guildHelpers.Add(guild.Id, new AntiSpamHelper(_restClient, guild, _guildConfigs,  _loggingService));
 		}
 	}
 

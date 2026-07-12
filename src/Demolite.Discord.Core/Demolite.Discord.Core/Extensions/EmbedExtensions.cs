@@ -23,6 +23,12 @@ public static class EmbedExtensions
 				.ToArray()
 		};
 	}
+
+	public static EmbedProperties CreateLogEmbed(this EmbedProperties field)
+	{
+		field.Title = $"Log - {DateTime.Now:HH:mm:ss}";
+		return field;
+	}
 	
 	private static EmbedFieldProperties CreateEmbedField(this JsonEmbedField field)
 	{

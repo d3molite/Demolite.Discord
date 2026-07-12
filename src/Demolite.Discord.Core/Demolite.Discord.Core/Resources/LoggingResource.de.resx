@@ -50,11 +50,11 @@
     <data name="Body_UserBanned" xml:space="preserve">
         <value>{0} wurde vom Server gebannt.</value>
     </data>
-    <data name="Header_UserBanned_Reason" xml:space="preserve">
-        <value>Grund:</value>
+    <data name="Header_UserBanned_Sync" xml:space="preserve">
+        <value>Synchronisation:</value>
     </data>
-    <data name="Body_UserBanned_ReasonNotFound" xml:space="preserve">
-        <value>Begründung konnte nicht abgefragt werden.</value>
+    <data name="Body_UserBanned_Sync" xml:space="preserve">
+        <value>Ban Synchronisation von Server: {0}</value>
     </data>
     <data name="Header_UserJoined" xml:space="preserve">
         <value>Nutzer beigetreten</value>
@@ -97,5 +97,11 @@
     </data>
     <data name="Body_MessageDeleted_Errors" xml:space="preserve">
         <value>Es fehlen informationen über die gelöschte Nachricht</value>
+    </data>
+    <data name="Header_UserUnbanned" xml:space="preserve">
+        <value>{0} wurde entbannt.</value>
+    </data>
+    <data name="Body_UserUnbanned" xml:space="preserve">
+        <value>{0} wurde entbannd.</value>
     </data>
 </root>

@@ -1,6 +1,7 @@
 using System.Text.Json.Nodes;
 using Demolite.Discord.Core.Extensions;
 using Demolite.Discord.Core.Resources;
+using NetCord;
 using NetCord.Gateway;
 using NetCord.JsonModels;
 using NetCord.Rest;
@@ -59,7 +60,7 @@ public partial class LoggingService
 		if (originalMessage.Content == editedMessage.Content)
 			return;
 
-		await LogCritical(editedMessage.GuildId!.Value, [MessageEditedEmbed(editedMessage, originalMessage)]);
+		await LogCritical(editedMessage.GuildId!.Value, [MessageEditedEmbed(editedMessage, originalMessage).CreateLogEmbed()]);
 	}
 
 	private EmbedProperties MessageEditedEmbed(Message editedMessage, Message? originalMessage = null)

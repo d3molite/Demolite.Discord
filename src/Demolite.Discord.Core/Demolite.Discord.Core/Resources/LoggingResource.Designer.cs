@@ -132,11 +132,11 @@ namespace Demolite.Discord.Core.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Could not fetch ban reason..
+        ///   Looks up a localized string similar to Ban synced from Guild: {0}.
         /// </summary>
-        public static string Body_UserBanned_ReasonNotFound {
+        public static string Body_UserBanned_Sync {
             get {
-                return ResourceManager.GetString("Body_UserBanned_ReasonNotFound", resourceCulture);
+                return ResourceManager.GetString("Body_UserBanned_Sync", resourceCulture);
             }
         }
         
@@ -164,6 +164,15 @@ namespace Demolite.Discord.Core.Resources {
         public static string Body_UserTimedOut {
             get {
                 return ResourceManager.GetString("Body_UserTimedOut", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User {0} has been unbanned..
+        /// </summary>
+        public static string Body_UserUnbanned {
+            get {
+                return ResourceManager.GetString("Body_UserUnbanned", resourceCulture);
             }
         }
         
@@ -249,11 +258,11 @@ namespace Demolite.Discord.Core.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ban reason:.
+        ///   Looks up a localized string similar to Ban sync:.
         /// </summary>
-        public static string Header_UserBanned_Reason {
+        public static string Header_UserBanned_Sync {
             get {
-                return ResourceManager.GetString("Header_UserBanned_Reason", resourceCulture);
+                return ResourceManager.GetString("Header_UserBanned_Sync", resourceCulture);
             }
         }
         
@@ -290,6 +299,15 @@ namespace Demolite.Discord.Core.Resources {
         public static string Header_UserTimedOut {
             get {
                 return ResourceManager.GetString("Header_UserTimedOut", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User {0} has been unbanned..
+        /// </summary>
+        public static string Header_UserUnbanned {
+            get {
+                return ResourceManager.GetString("Header_UserUnbanned", resourceCulture);
             }
         }
         

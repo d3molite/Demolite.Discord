@@ -17,4 +17,10 @@ public interface ILoggingService
 	public Task LogUserBanned(ulong guildId, User user, RestGuild? syncGuild = null);
 	
 	public Task LogUserUnbanned(ulong guildId, User user, RestGuild? syncGuild = null);
+
+	public Task LogUserJoined(ulong guildId, User user);
+
+	public Task LogUserLeft(ulong guildId, User user);
+
+	public Task LogUserTimedOut(ulong guildId, User user);
 }

@@ -57,11 +57,11 @@
     <data name="Body_UserBanned" xml:space="preserve">
         <value>User {0} has been banned from the server.</value>
     </data>
-    <data name="Header_UserBanned_Reason" xml:space="preserve">
-        <value>Ban reason:</value>
+    <data name="Header_UserBanned_Sync" xml:space="preserve">
+        <value>Ban sync:</value>
     </data>
-    <data name="Body_UserBanned_ReasonNotFound" xml:space="preserve">
-        <value>Could not fetch ban reason.</value>
+    <data name="Body_UserBanned_Sync" xml:space="preserve">
+        <value>Ban synced from Guild: {0}</value>
     </data>
     <data name="Header_UserLeft" xml:space="preserve">
         <value>User left</value>
@@ -104,5 +104,11 @@
     </data>
     <data name="Body_MessageDeleted_Errors" xml:space="preserve">
         <value>There were errors with retrieving the message</value>
+    </data>
+    <data name="Header_UserUnbanned" xml:space="preserve">
+        <value>User {0} has been unbanned.</value>
+    </data>
+    <data name="Body_UserUnbanned" xml:space="preserve">
+        <value>User {0} has been unbanned.</value>
     </data>
 </root>

@@ -8,6 +8,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core Code", "Core Code", "{
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Instances", "Instances", "{587A31CA-1162-4CD6-B3AE-2FF268266297}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demolite.Discord.Bot.GuildGuard", "Demolite.Discord.Bot.GuildGuard\Demolite.Discord.Bot.GuildGuard.csproj", "{C91DBB7C-EC9D-4732-8BF8-4193F27198E0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{80B7CF93-0DC1-41EE-AF15-F80B260842B3}"
+	ProjectSection(SolutionItems) = preProject
+		compose.yaml = compose.yaml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -22,9 +29,14 @@ Global
 		{AEE41F3C-0FD2-4068-AB8F-79D69118146D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AEE41F3C-0FD2-4068-AB8F-79D69118146D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AEE41F3C-0FD2-4068-AB8F-79D69118146D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C91DBB7C-EC9D-4732-8BF8-4193F27198E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C91DBB7C-EC9D-4732-8BF8-4193F27198E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C91DBB7C-EC9D-4732-8BF8-4193F27198E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C91DBB7C-EC9D-4732-8BF8-4193F27198E0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{C44771DF-761D-48D1-B20B-F582138AE75E} = {E4D9073D-2763-4394-B2C0-B82F28F9BC10}
 		{AEE41F3C-0FD2-4068-AB8F-79D69118146D} = {587A31CA-1162-4CD6-B3AE-2FF268266297}
+		{C91DBB7C-EC9D-4732-8BF8-4193F27198E0} = {587A31CA-1162-4CD6-B3AE-2FF268266297}
 	EndGlobalSection
 EndGlobal

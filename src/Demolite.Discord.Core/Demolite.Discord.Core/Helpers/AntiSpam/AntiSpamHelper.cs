@@ -1,11 +1,12 @@
 using Demolite.Discord.Core.Configuration;
+using Demolite.Discord.Core.Interfaces;
 using NetCord;
 using NetCord.Gateway;
 using NetCord.Rest;
 
 namespace Demolite.Discord.Core.Helpers.AntiSpam;
 
-public class AntiSpamHelper(RestClient restClient, RestGuild guild, GuildConfig[] guildConfigs)
+public class AntiSpamHelper(RestClient restClient, RestGuild guild, GuildConfig[] guildConfigs, ILoggingService loggingService)
 {
 	private Dictionary<ulong, MessageQueue> _userMessages = [];
 	
@@ -70,7 +71,7 @@ public class AntiSpamHelper(RestClient restClient, RestGuild guild, GuildConfig[
 
 	private void StartSpamHandler(MessageQueue queue, User user)
 	{
-		var handler = new SpamHandler(restClient, guild, user, queue);
+		var handler = new SpamHandler(restClient, guild, user, queue, loggingService);
 		
 		handler.SpamDeleted += Cleanup;
 		_spamHandlers.Add(handler);
