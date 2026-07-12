@@ -8,6 +8,7 @@ using NetCord;
 using NetCord.Gateway;
 using NetCord.JsonModels;
 using NetCord.Rest;
+using Serilog;
 
 namespace Demolite.Discord.Core.Services;
 
@@ -29,6 +30,8 @@ public partial class LoggingService(
 
 		if (channel is TextChannel textChannel)
 			await textChannel.SendMessageAsync(embed.CreateLogMessage());
+		else
+			Log.Error("Logging channel with id '{ChannelId}' is not a text channel", channelId);
 	}
 
 	public async Task LogCritical(ulong guildId, EmbedProperties[] embed)
@@ -38,6 +41,8 @@ public partial class LoggingService(
 
 		if (channel is TextChannel textChannel)
 			await textChannel.SendMessageAsync(embed.CreateLogMessage());
+		else
+			Log.Error("Logging channel with id '{ChannelId}' is not a text channel", channelId);
 	}
 
 	private ulong GetLoggingChannelId(ulong guildId, bool isCritical)

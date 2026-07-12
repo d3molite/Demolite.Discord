@@ -20,7 +20,7 @@ var discordConfig = builder.GetDiscordConfig();
 builder.Services.AddDiscordGateway(options 
 		=>
 	{
-		options.Intents = GatewayIntents.GuildMessages | GatewayIntents.MessageContent;
+		options.Intents = GatewayIntents.GuildMessages | GatewayIntents.MessageContent | GatewayIntents.GuildUsers;
 		options.Presence = discordConfig.CreatePresence();
 	}
 );

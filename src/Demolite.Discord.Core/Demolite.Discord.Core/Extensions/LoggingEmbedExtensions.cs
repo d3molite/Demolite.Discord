@@ -31,7 +31,7 @@ public static class LoggingEmbedExtensions
 	public static string ToHumanFriendlyString(this DateTimeOffset time, string? locale)
 	{
 		var resources = UnitResource.ResourceManager;
-		var timeSpan =  time - DateTimeOffset.Now;
+		var timeSpan =  DateTimeOffset.Now - time;
 		
 		var roundedAge = Math.Round(timeSpan.TotalDays, 2);
 

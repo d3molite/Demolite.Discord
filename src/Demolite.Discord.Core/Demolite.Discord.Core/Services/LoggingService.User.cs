@@ -2,6 +2,7 @@ using Demolite.Discord.Core.Extensions;
 using Demolite.Discord.Core.Resources;
 using NetCord;
 using NetCord.Rest;
+using Serilog;
 
 namespace Demolite.Discord.Core.Services;
 
@@ -137,7 +138,7 @@ public partial class LoggingService
 
 	
 
-	private EmbedProperties UserLeftEmbed(string? culture, User user)
+	private static EmbedProperties UserLeftEmbed(string? culture, User user)
 	{
 		return new EmbedProperties()
 		{

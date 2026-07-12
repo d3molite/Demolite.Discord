@@ -1,6 +1,7 @@
 using Demolite.Discord.Core.Interfaces;
 using NetCord.Gateway;
 using NetCord.Hosting.Gateway;
+using Serilog;
 
 namespace Demolite.Discord.Core.Bot.Handlers;
 
