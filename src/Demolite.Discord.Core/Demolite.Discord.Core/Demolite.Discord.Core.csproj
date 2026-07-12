@@ -18,6 +18,10 @@
         <Generator>PublicResXFileCodeGenerator</Generator>
         <LastGenOutput>LoggingResource.Designer.cs</LastGenOutput>
       </EmbeddedResource>
+      <EmbeddedResource Update="Resources\UnitResource.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
+        <LastGenOutput>UnitResource.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
     </ItemGroup>
 
     <ItemGroup>
@@ -25,6 +29,11 @@
         <DesignTime>True</DesignTime>
         <AutoGen>True</AutoGen>
         <DependentUpon>LoggingResource.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Resources\UnitResource.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>UnitResource.resx</DependentUpon>
       </Compile>
     </ItemGroup>
 

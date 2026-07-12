@@ -1,4 +1,5 @@
 using System.Text;
+using Demolite.Discord.Core.Resources;
 using NetCord;
 using NetCord.Gateway;
 using NetCord.JsonModels;
@@ -25,6 +26,26 @@ public static class LoggingEmbedExtensions
 	public static string EmbedUser(this Message message)
 	{
 		return EmbedUser(message.Author);
+	}
+
+	public static string ToHumanFriendlyString(this DateTimeOffset time, string? locale)
+	{
+		var resources = UnitResource.ResourceManager;
+		var timeSpan =  time - DateTimeOffset.Now;
+		
+		var roundedAge = Math.Round(timeSpan.TotalDays, 2);
+
+		return roundedAge switch
+		{
+			// if the time is smaller than one day.
+			< 1 => $"{Math.Round(timeSpan.TotalHours, 2)} {resources.GetResource(x => UnitResource.Hours, locale)}",
+
+			// if the time is smaller than a year.
+			< 365 => $"{roundedAge} {resources.GetResource(x => UnitResource.Days, locale)}",
+
+			// if the time is greater than a year.
+			var _ => $"{Math.Round(timeSpan.TotalDays / 365, 2)} {resources.GetResource(x => UnitResource.Years, locale)}",
+		};
 	}
 
 	public static string EmbedUser(this User user)

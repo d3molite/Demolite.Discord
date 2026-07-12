@@ -118,6 +118,12 @@ public partial class LoggingService
 					Value = Resources.GetResource(_ => LoggingResource.Body_UserJoined, culture)
 						.Format(user.EmbedUser()),
 					Inline = false
+				},
+				new EmbedFieldProperties()
+				{
+					Name = Resources.GetResource(_ => LoggingResource.Header_UserJoined_Age, culture),
+					Value = user.CreatedAt.ToHumanFriendlyString(culture),
+					Inline = false
 				}
 			]
 		};

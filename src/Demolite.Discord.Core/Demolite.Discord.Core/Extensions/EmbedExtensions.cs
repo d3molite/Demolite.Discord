@@ -18,7 +18,7 @@ public static class EmbedExtensions
 	{
 		return new EmbedProperties()
 		{
-			Title = $"Log - {DateTime.Now:HH:mm:ss}",
+			Title = $"Log - {DateTime.Now:HH:mm:ss} (UTC)",
 			Fields = fields.Select(field => field.CreateEmbedField())
 				.ToArray()
 		};
@@ -26,7 +26,7 @@ public static class EmbedExtensions
 
 	public static EmbedProperties CreateLogEmbed(this EmbedProperties field)
 	{
-		field.Title = $"Log - {DateTime.Now:HH:mm:ss}";
+		field.Title = $"Log - {DateTime.Now:HH:mm:ss} (UTC)";
 		return field;
 	}
 	
