@@ -17,7 +17,8 @@ public class UserBanAddHandler(ILoggingService loggingService, GuildConfig[] con
 
 		if (!_userBanInProgress.TryAdd(arg.User.Id, baseGuild))
 		{
-			await loggingService.LogUserBanned(arg.GuildId, arg.User, baseGuild);
+			var syncGuild = _userBanInProgress[arg.User.Id];
+			await loggingService.LogUserBanned(arg.GuildId, arg.User, syncGuild);
 			return;
 		}
 		
