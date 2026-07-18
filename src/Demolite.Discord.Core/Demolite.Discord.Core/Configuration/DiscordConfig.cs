@@ -33,4 +33,6 @@ public class GuildConfig
 	public ulong? HoneyPotChannelId { get; set; }
 	
 	public string LoggingCulture { get; set; }
+	
+	public string? CustomNickname { get; set; }
 }

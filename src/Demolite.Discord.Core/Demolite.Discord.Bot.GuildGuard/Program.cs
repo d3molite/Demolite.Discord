@@ -37,6 +37,8 @@ builder.Services.AddGatewayHandler<UserBanRemoveHandler>();
 builder.Services.AddGatewayHandler<UserJoinHandler>();
 builder.Services.AddGatewayHandler<UserLeaveHandler>();
 
+builder.Services.AddSingleton<ICustomNicknameManager, CustomNicknameManager>();
+
 var host = builder.Build();
 
 await host.RunAsync();
