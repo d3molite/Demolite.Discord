@@ -9,7 +9,8 @@ using NetCord.Gateway;
 using NetCord.Hosting.Gateway;
 using Serilog;
 
-Log.Logger = new LoggerConfiguration().WriteTo.Console().CreateLogger();
+Log.Logger = new LoggerConfiguration().WriteTo.Console()
+	.CreateLogger();
 
 var builder = Host.CreateApplicationBuilder(args);
 
@@ -17,10 +18,10 @@ builder.GetAndRegisterConfigs();
 
 var discordConfig = builder.GetDiscordConfig();
 
-builder.Services.AddDiscordGateway(options 
-		=>
+builder.Services.AddDiscordGateway(options =>
 	{
-		options.Intents = GatewayIntents.GuildMessages | GatewayIntents.MessageContent | GatewayIntents.GuildUsers;
+		options.Intents = GatewayIntents.GuildMessages | GatewayIntents.MessageContent | GatewayIntents.GuildUsers |
+						GatewayIntents.GuildModeration;
 		options.Presence = discordConfig.CreatePresence();
 	}
 );
@@ -37,6 +38,5 @@ builder.Services.AddGatewayHandler<UserJoinHandler>();
 builder.Services.AddGatewayHandler<UserLeaveHandler>();
 
 var host = builder.Build();
-
 
 await host.RunAsync();
