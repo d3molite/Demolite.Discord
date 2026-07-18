@@ -31,8 +31,10 @@ public class GuildConfig
 	public required ulong LogCritical { get; set; }
 	
 	public ulong? HoneyPotChannelId { get; set; }
+
+	public string[] AntispamExceptions { get; set; } = [];
 	
-	public string LoggingCulture { get; set; }
+	public string? LoggingCulture { get; set; }
 	
 	public string? CustomNickname { get; set; }
 }

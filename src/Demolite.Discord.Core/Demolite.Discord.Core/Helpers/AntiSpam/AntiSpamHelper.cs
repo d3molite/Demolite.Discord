@@ -3,6 +3,7 @@ using Demolite.Discord.Core.Interfaces;
 using NetCord;
 using NetCord.Gateway;
 using NetCord.Rest;
+using Serilog;
 
 namespace Demolite.Discord.Core.Helpers.AntiSpam;
 
@@ -24,6 +25,9 @@ public class AntiSpamHelper(RestClient restClient, RestGuild guild, GuildConfig[
 
 	public Task CheckForSpam(Message message)
 	{
+		if (IgnoreMessage(message))
+			return Task.CompletedTask;
+
 		var existingHandler = _spamHandlers.FirstOrDefault(x => x.User == message.Author);
 
 		if (existingHandler != null)
@@ -81,6 +85,26 @@ public class AntiSpamHelper(RestClient restClient, RestGuild guild, GuildConfig[
 	{
 		if (sender is SpamHandler handler)
 			_spamHandlers.Remove(handler);
+	}
+	
+	private bool IgnoreMessage(Message message)
+	{
+		try
+		{
+			var config = guildConfigs.FirstOrDefault(x => x.Id == message.GuildId);
+			
+			if (config is null)
+				return false;
+			
+			if (config.AntispamExceptions.Any(x => message.Content.StartsWith(x)))
+				return true;
+		}
+		catch (Exception ex)
+		{
+			Log.Error(ex, "Error checking for antispam exceptions in guild {GuildId}", message.GuildId);
+		}
+
+		return false;
 	}
 
 	private bool IsHoneyPotMessage(Message message)
