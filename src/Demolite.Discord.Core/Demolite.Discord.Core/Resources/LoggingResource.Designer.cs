@@ -204,6 +204,15 @@ namespace Demolite.Discord.Core.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Attachments.
+        /// </summary>
+        public static string Header_Attachments {
+            get {
+                return ResourceManager.GetString("Header_Attachments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Content:.
         /// </summary>
         public static string Header_Content {

@@ -66,6 +66,9 @@
     <data name="Header_UserLeft" xml:space="preserve">
         <value>User left</value>
     </data>
+    <data name="Header_Attachments" xml:space="preserve">
+        <value>Attachments</value>
+    </data>
     <data name="Header_UserJoined" xml:space="preserve">
         <value>User joined</value>
     </data>

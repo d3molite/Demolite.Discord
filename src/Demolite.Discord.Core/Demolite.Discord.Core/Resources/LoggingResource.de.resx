@@ -104,4 +104,7 @@
     <data name="Body_UserUnbanned" xml:space="preserve">
         <value>{0} wurde entbannd.</value>
     </data>
+    <data name="Header_Attachments" xml:space="preserve">
+        <value>Anhänge:</value>
+    </data>
 </root>

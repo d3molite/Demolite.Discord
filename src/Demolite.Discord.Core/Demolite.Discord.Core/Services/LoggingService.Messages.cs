@@ -27,7 +27,7 @@ public partial class LoggingService
 				.Format(message.Author.EmbedUser(), channelId);
 		}
 
-		JsonEmbedField[] fields =
+		List<JsonEmbedField> fields =
 		[
 			new()
 			{
@@ -43,7 +43,17 @@ public partial class LoggingService
 			}
 		];
 
-		await LogCritical(guildId, [fields.CreateLogEmbed()]);
+		if (message?.Attachments.Count > 0)
+		{
+			fields.Add(new JsonEmbedField
+			{
+				Name = Resources.GetResource(_ => LoggingResource.Header_Attachments, culture),
+				Value = string.Join(", ", message.Attachments.Select(attachment => attachment.FileName)),
+				Inline = false
+			});
+		}
+
+		await LogCritical(guildId, [fields.ToArray().CreateLogEmbed()]);
 	}
 
 	public async Task LogMessageUpdated(Message editedMessage)
