@@ -123,6 +123,24 @@ namespace Demolite.Discord.Core.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} messages by user {1} have been deleted in &lt;#{2}&gt;..
+        /// </summary>
+        public static string Body_MessagesDeletedBulk {
+            get {
+                return ResourceManager.GetString("Body_MessagesDeletedBulk", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} additional messages were deleted in channel &lt;#{1}&gt;, but could not be retrieved from cache..
+        /// </summary>
+        public static string Body_MessagesDeletedBulk_NotFound {
+            get {
+                return ResourceManager.GetString("Body_MessagesDeletedBulk_NotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to User {0} has been banned from the server..
         /// </summary>
         public static string Body_UserBanned {
@@ -254,6 +272,15 @@ namespace Demolite.Discord.Core.Resources {
         public static string Header_MessageEdited_OriginalMessage {
             get {
                 return ResourceManager.GetString("Header_MessageEdited_OriginalMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Messages deleted.
+        /// </summary>
+        public static string Header_MessagesDeleted {
+            get {
+                return ResourceManager.GetString("Header_MessagesDeleted", resourceCulture);
             }
         }
         

@@ -1,3 +1,4 @@
+using System.Text;
 using System.Text.Json.Nodes;
 using Demolite.Discord.Core.Extensions;
 using Demolite.Discord.Core.Resources;
@@ -54,6 +55,86 @@ public partial class LoggingService
 		}
 
 		await LogCritical(guildId, [fields.ToArray().CreateLogEmbed()]);
+	}
+
+	public async Task LogMessagesDeleted(ulong guildId, ulong channelId, IReadOnlyList<ulong> messageIds)
+	{
+		var culture = GetLoggingCulture(guildId);
+
+		var messages = new List<Message>();
+		var notFoundCount = 0;
+
+		foreach (var messageId in messageIds)
+		{
+			if (cache.TryRemove(channelId, messageId, out var message))
+				messages.Add(message);
+			else
+				notFoundCount++;
+		}
+
+		var authors = messages.Select(m => m.Author.EmbedUser()).Distinct().ToList();
+
+		var messageInfo = Resources.GetResource(_ => LoggingResource.Body_MessagesDeletedBulk, culture)
+			.Format(messages.Count, string.Join(", ", authors), channelId);
+
+		List<JsonEmbedField> fields =
+		[
+			new()
+			{
+				Name = Resources.GetResource(_ => LoggingResource.Header_MessageDeleted, culture),
+				Value = messageInfo,
+				Inline = false
+			}
+		];
+
+		if (notFoundCount > 0)
+		{
+			fields.Add(new JsonEmbedField
+			{
+				Name = Resources.GetResource(_ => LoggingResource.Header_MessageDeleted, culture),
+				Value = Resources.GetResource(_ => LoggingResource.Body_MessagesDeletedBulk_NotFound, culture)
+					.Format(notFoundCount, channelId),
+				Inline = false
+			});
+		}
+
+		var lines = messages.Select(message =>
+		{
+			var line = message.Content;
+
+			if (message.Attachments.Count > 0)
+				line += $" ({string.Join(", ", message.Attachments.Select(a => a.FileName))})";
+
+			return line;
+		}).ToList();
+
+		fields.AddRange(ChunkLines(lines).Select(chunk => new JsonEmbedField
+		{
+			Name = Resources.GetResource(_ => LoggingResource.Header_Content, culture),
+			Value = chunk,
+			Inline = false
+		}));
+
+		await LogCritical(guildId, [fields.ToArray().CreateLogEmbed()]);
+	}
+
+	private static IEnumerable<string> ChunkLines(IReadOnlyList<string> lines, int maxLength = 1024)
+	{
+		var current = new StringBuilder();
+
+		foreach (var line in lines)
+		{
+			if (current.Length + line.Length + Environment.NewLine.Length > maxLength)
+			{
+				yield return current.ToString();
+				current.Clear();
+			}
+
+			current.AppendLine(line);
+		}
+
+		if (current.Length > 0)
+			yield return current.ToString();
 	}
 
 	public async Task LogMessageUpdated(Message editedMessage)

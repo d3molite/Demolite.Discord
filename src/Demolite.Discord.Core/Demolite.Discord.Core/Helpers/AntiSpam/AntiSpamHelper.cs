@@ -7,13 +7,19 @@ using Serilog;
 
 namespace Demolite.Discord.Core.Helpers.AntiSpam;
 
-public class AntiSpamHelper(RestClient restClient, RestGuild guild, GuildConfig[] guildConfigs, ILoggingService loggingService)
+public class AntiSpamHelper(
+	RestClient restClient,
+	RestGuild guild,
+	GuildConfig[] guildConfigs,
+	ILoggingService loggingService
+)
 {
 	private Dictionary<ulong, MessageQueue> _userMessages = [];
-	
+
 	private readonly List<SpamHandler> _spamHandlers = [];
 
-	private IEnumerable<ulong> HoneyPots => guildConfigs.Where(x => x.HoneyPotChannelId != null).Select(x => x.HoneyPotChannelId!.Value);
+	private IEnumerable<ulong> HoneyPots => guildConfigs.Where(x => x.GuardConfig?.HoneyPotChannelId != null)
+		.Select(x => x.GuardConfig!.HoneyPotChannelId!.Value);
 
 	public void CleanupQueues()
 	{
@@ -35,14 +41,14 @@ public class AntiSpamHelper(RestClient restClient, RestGuild guild, GuildConfig[
 			AddToRunning(existingHandler, message);
 			return Task.CompletedTask;
 		}
-		
+
 		EnqueueMessage(message);
 		return Task.CompletedTask;
 	}
-	
+
 	private static void AddToRunning(SpamHandler existingHandler, Message message)
 		=> existingHandler.MessageQueue.ForceEnqueue(message);
-	
+
 	private void EnqueueMessage(Message message)
 	{
 		if (_userMessages.TryGetValue(message.Author.Id, out var messageQueue))
@@ -70,33 +76,32 @@ public class AntiSpamHelper(RestClient restClient, RestGuild guild, GuildConfig[
 		{
 			StartSpamHandler(queue, user);
 		}
-		
 	}
 
 	private void StartSpamHandler(MessageQueue queue, User user)
 	{
 		var handler = new SpamHandler(restClient, guild, user, queue, loggingService);
-		
+
 		handler.SpamDeleted += Cleanup;
 		_spamHandlers.Add(handler);
 	}
-	
+
 	private void Cleanup(object? sender, EventArgs e)
 	{
 		if (sender is SpamHandler handler)
 			_spamHandlers.Remove(handler);
 	}
-	
+
 	private bool IgnoreMessage(Message message)
 	{
 		try
 		{
 			var config = guildConfigs.FirstOrDefault(x => x.Id == message.GuildId);
-			
+
 			if (config is null)
 				return false;
-			
-			if (config.AntispamExceptions.Any(x => message.Content.StartsWith(x)))
+
+			if (config.GuardConfig?.AntispamExceptions.Any(x => message.Content.StartsWith(x)) == true)
 				return true;
 		}
 		catch (Exception ex)
@@ -109,19 +114,17 @@ public class AntiSpamHelper(RestClient restClient, RestGuild guild, GuildConfig[
 
 	private bool IsHoneyPotMessage(Message message)
 		=> HoneyPots.Contains(message.ChannelId);
-	
+
 	private static bool ContainsSpam(MessageQueue queue)
 	{
-		var isSpamByMessage = queue.Queue
-			.Where(x => !string.IsNullOrEmpty(x.Content))
+		var isSpamByMessage = queue.Queue.Where(x => !string.IsNullOrEmpty(x.Content))
 			.GroupBy(message => message.Content)
 			.Any(group => group.Count() > 5);
-		
-		var isSpamByAttachment = queue.Queue
-			.Where(message => message.Attachments.Count > 0)
+
+		var isSpamByAttachment = queue.Queue.Where(message => message.Attachments.Count > 0)
 			.GroupBy(message => string.Join("", message.Attachments.Select(x => x.FileName)))
 			.Any(group => group.Count() > 5);
-		
+
 		var isSpamByStickers = queue.Queue.Where(message => message.Stickers.Count > 0)
 			.GroupBy(message => message.Stickers[0].Id)
 			.Any(group => group.Count() > 5);

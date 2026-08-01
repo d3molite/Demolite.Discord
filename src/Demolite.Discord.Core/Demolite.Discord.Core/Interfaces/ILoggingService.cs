@@ -11,6 +11,8 @@ public interface ILoggingService
 	public Task LogCritical(ulong guildId, EmbedProperties[] embed);
 	
 	public Task LogMessageDeleted(ulong guildId, ulong channelId, ulong messageId);
+	
+	public Task LogMessagesDeleted(ulong guildId, ulong channelId, IReadOnlyList<ulong> messageIds);
 
 	public Task LogMessageUpdated(Message editedMessage);
 	

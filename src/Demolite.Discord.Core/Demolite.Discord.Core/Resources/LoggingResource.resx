@@ -114,4 +114,13 @@
     <data name="Body_UserUnbanned" xml:space="preserve">
         <value>User {0} has been unbanned.</value>
     </data>
+    <data name="Body_MessagesDeletedBulk" xml:space="preserve">
+        <value>{0} messages by user {1} have been deleted in &lt;#{2}&gt;.</value>
+    </data>
+    <data name="Header_MessagesDeleted" xml:space="preserve">
+        <value>Messages deleted</value>
+    </data>
+    <data name="Body_MessagesDeletedBulk_NotFound" xml:space="preserve">
+        <value>{0} additional messages were deleted in channel &lt;#{1}&gt;, but could not be retrieved from cache.</value>
+    </data>
 </root>

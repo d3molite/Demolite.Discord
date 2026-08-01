@@ -107,4 +107,13 @@
     <data name="Header_Attachments" xml:space="preserve">
         <value>Anhänge:</value>
     </data>
+    <data name="Body_MessagesDeletedBulk" xml:space="preserve">
+        <value>{0} Nachrichten von {1} wurden im Kanal &lt;#{2}&gt; gelöscht.</value>
+    </data>
+    <data name="Header_MessagesDeleted" xml:space="preserve">
+        <value>Nachrichten gelöscht</value>
+    </data>
+    <data name="Body_MessagesDeletedBulk_NotFound" xml:space="preserve">
+        <value>{0} weitere Nachrichten wurden in Kanal &lt;#{1}&gt; gelöscht, konnten jedoch nicht aus dem Cache abgerufen werden.</value>
+    </data>
 </root>

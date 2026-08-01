@@ -26,6 +26,16 @@ public class GuildConfig
 
 	public required string Name { get; set; }
 	
+	public GuardConfig? GuardConfig { get; set; }
+	
+	public string? LoggingCulture { get; set; }
+	
+	public string? CustomNickname { get; set; }
+}
+
+[UsedImplicitly]
+public class GuardConfig
+{
 	public required ulong LogDefault { get; set; }
 	
 	public required ulong LogCritical { get; set; }
@@ -34,7 +44,4 @@ public class GuildConfig
 
 	public string[] AntispamExceptions { get; set; } = [];
 	
-	public string? LoggingCulture { get; set; }
-	
-	public string? CustomNickname { get; set; }
 }

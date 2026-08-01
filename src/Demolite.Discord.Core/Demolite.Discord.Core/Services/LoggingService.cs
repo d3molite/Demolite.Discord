@@ -19,8 +19,6 @@ public partial class LoggingService(
 	ChannelMessageCache cache
 ) : ILoggingService
 {
-	private const string MessageDeleted = "A message by user <@{0}> ({1}) was deleted in channel <#{2}>.";
-
 	private static ResourceManager Resources => LoggingResource.ResourceManager;
 
 	public async Task LogDefault(ulong guildId, EmbedProperties[] embed)
@@ -50,7 +48,7 @@ public partial class LoggingService(
 		if (!guildConfigs.TryGetValue(guildId, out var guildConfig))
 			throw new KeyNotFoundException($"The specified guild id '{guildId}' was not found.");
 
-		return isCritical ? guildConfig.LogCritical : guildConfig.LogDefault;
+		return isCritical ? guildConfig.GuardConfig!.LogCritical : guildConfig.GuardConfig!.LogDefault;
 	}
 
 	private string? GetLoggingCulture(ulong guildId)
