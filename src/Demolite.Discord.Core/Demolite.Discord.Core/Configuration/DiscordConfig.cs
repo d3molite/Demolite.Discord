@@ -28,6 +28,8 @@ public class GuildConfig
 	
 	public GuardConfig? GuardConfig { get; set; }
 	
+	public ToolsConfig? ToolsConfig { get; set; }
+	
 	public string? LoggingCulture { get; set; }
 	
 	public string? CustomNickname { get; set; }
@@ -43,5 +45,13 @@ public class GuardConfig
 	public ulong? HoneyPotChannelId { get; set; }
 
 	public string[] AntispamExceptions { get; set; } = [];
-	
+}
+
+[UsedImplicitly]
+public class ToolsConfig
+{
+	public ulong? VoiceChannelCreateId { get; set; }
+	public bool? VoiceChannelRenameAllowed { get; set; }
+
+	public int VoiceChannelDeleteDelaySeconds { get; set; } = 60;
 }

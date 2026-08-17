@@ -42,6 +42,4 @@ builder.Services.AddGatewayHandler<NicknameChangeHandler>();
 
 var host = builder.Build();
 
-
-
 await host.RunAsync();

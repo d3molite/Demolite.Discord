@@ -1,0 +1,10 @@
+﻿services:
+  demolite.discord.bot.guildtools:
+    image: hub.demolite.de/bots/guildtools
+    container_name: guildtools
+    restart: unless-stopped
+    build:
+      context: ..
+      dockerfile: ./Demolite.Discord.Bot.GuildTools/Dockerfile
+    volumes:
+      - "./config/appsettings.json:/app/appsettings.json"

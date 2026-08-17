@@ -1,11 +1,10 @@
 ﻿using Demolite.Discord.Core.Bot.Handlers;
+using Demolite.Discord.Core.Bot.Handlers.Voice;
 using Demolite.Discord.Core.Bot.Modules;
 using Demolite.Discord.Core.Configuration;
 using Demolite.Discord.Core.Extensions;
 using Demolite.Discord.Core.Helpers.Cache;
 using Demolite.Discord.Core.Helpers.Voice;
-using Demolite.Discord.Core.Interfaces;
-using Demolite.Discord.Core.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using NetCord;
@@ -16,33 +15,22 @@ using NetCord.Hosting.Services.ComponentInteractions;
 using NetCord.Services.ComponentInteractions;
 using Serilog;
 
-Log.Logger = new LoggerConfiguration().WriteTo.Console().CreateLogger();
+Log.Logger = new LoggerConfiguration().WriteTo.Console()
+	.CreateLogger();
 
 var builder = Host.CreateApplicationBuilder(args);
 
 builder.GetAndRegisterConfigs();
-
 var discordConfig = builder.GetDiscordConfig();
 
-builder.Services.AddDiscordGateway(options 
-	=>
+builder.Services.AddDiscordGateway(options =>
 	{
-		options.Intents = GatewayIntents.GuildMessages | GatewayIntents.MessageContent | GatewayIntents.AllNonPrivileged | GatewayIntents.GuildUsers;
+		options.Intents = GatewayIntents.AllNonPrivileged;
 		options.Presence = discordConfig.CreatePresence();
 	}
 );
 
-
-
-builder.Services.AddSingleton<ChannelMessageCache>();
-builder.Services.AddGatewayHandler<MessageCreateHandler>();
-builder.Services.AddSingleton<ILoggingService, LoggingService>();
-builder.Services.AddGatewayHandler<AntiSpamHandler>();
-builder.Services.AddGatewayHandler<MessageDeleteHandler>();
-builder.Services.AddGatewayHandler<MessageDeleteBulkHandler>();
-builder.Services.AddGatewayHandler<MessageEditHandler>();
-builder.Services.AddGatewayHandler<UserBanAddHandler>();
-builder.Services.AddGatewayHandler<UserBanRemoveHandler>();
+builder.Services.AddGatewayHandler<NicknameChangeHandler>();
 
 builder.Services.AddComponentInteractions<ModalInteraction, ModalInteractionContext>();
 builder.Services.AddComponentInteractions<ButtonInteraction, ButtonInteractionContext>();
