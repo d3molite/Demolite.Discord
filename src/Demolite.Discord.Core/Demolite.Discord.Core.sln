@@ -15,6 +15,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		compose.yaml = compose.yaml
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demolite.Discord.Bot.GuildTools", "Demolite.Discord.Bot.GuildTools\Demolite.Discord.Bot.GuildTools.csproj", "{D68C421A-7E86-4B69-A0EA-B60C78698EB8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demolite.Discord.Bot.Dads", "Demolite.Discord.Bot.Dads\Demolite.Discord.Bot.Dads.csproj", "{B7ABAECB-19B5-4A02-8AA2-341F47854C8A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,10 +37,20 @@ Global
 		{C91DBB7C-EC9D-4732-8BF8-4193F27198E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C91DBB7C-EC9D-4732-8BF8-4193F27198E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C91DBB7C-EC9D-4732-8BF8-4193F27198E0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D68C421A-7E86-4B69-A0EA-B60C78698EB8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D68C421A-7E86-4B69-A0EA-B60C78698EB8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D68C421A-7E86-4B69-A0EA-B60C78698EB8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D68C421A-7E86-4B69-A0EA-B60C78698EB8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B7ABAECB-19B5-4A02-8AA2-341F47854C8A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B7ABAECB-19B5-4A02-8AA2-341F47854C8A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B7ABAECB-19B5-4A02-8AA2-341F47854C8A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B7ABAECB-19B5-4A02-8AA2-341F47854C8A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{C44771DF-761D-48D1-B20B-F582138AE75E} = {E4D9073D-2763-4394-B2C0-B82F28F9BC10}
 		{AEE41F3C-0FD2-4068-AB8F-79D69118146D} = {587A31CA-1162-4CD6-B3AE-2FF268266297}
 		{C91DBB7C-EC9D-4732-8BF8-4193F27198E0} = {587A31CA-1162-4CD6-B3AE-2FF268266297}
+		{D68C421A-7E86-4B69-A0EA-B60C78698EB8} = {587A31CA-1162-4CD6-B3AE-2FF268266297}
+		{B7ABAECB-19B5-4A02-8AA2-341F47854C8A} = {587A31CA-1162-4CD6-B3AE-2FF268266297}
 	EndGlobalSection
 EndGlobal
