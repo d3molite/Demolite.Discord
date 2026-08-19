@@ -1,0 +1,40 @@
+@page "/plan"
+@using Demolite.Discord.Bot.Dads.Components.Items
+@using Demolite.Discord.Bot.Dads.Components.Logic
+@using Demolite.Discord.Bot.Dads.Services
+
+@inject SeatingConfigurationService SeatingConfigurationService
+@inject LanMemberHandler MemberHandler
+
+<MudDropContainer T="LanMember"
+                  Items="MemberHandler.LanMembers"
+                  ItemsSelector="@((member, seat) => (member.Seat ?? "") == seat)"
+                  ItemDropped="_dropZoneHelper.ItemUpdated"
+                  CanDrop="_dropZoneHelper.CanDrop"
+                  Class="d-flex flex-grow-1 h-100">
+    <ChildContent>
+        <MudStack Row="true" Class="h-100 w-100">
+            <RowsViewer Rows="SeatingConfigurationService.Rows"/>
+            <div style="flex-shrink: 0;">
+                <PlannerSidebar/>
+            </div>
+        </MudStack>
+    </ChildContent>
+    <ItemRenderer>
+        <SeatCardContent Member="context"/>
+    </ItemRenderer>
+</MudDropContainer>
+
+@code {
+    private DropZoneHelper _dropZoneHelper = null!;
+
+    protected override void OnInitialized()
+    {
+        _dropZoneHelper = new DropZoneHelper(MemberHandler, SeatingConfigurationService);
+        
+        MemberHandler.LoadLanMembersFromDatabase();
+        SeatingConfigurationService.LoadRows();
+        SeatingConfigurationService.SeatingDataUpdated += (_, _) => InvokeAsync(StateHasChanged);
+    }
+
+}

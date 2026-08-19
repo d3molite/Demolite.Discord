@@ -1,0 +1,77 @@
+@using Demolite.Discord.Bot.Dads.Services
+@inject LanMemberHandler MemberHandler
+
+<MudPaper Class="d-flex" Style="width: 9.5%; height: 100px;">
+    <MudStack Row="true" Style="width: 100%" Spacing="0" Justify="Justify.SpaceBetween">
+        <MudDropZone T="LanMember"
+                     Identifier="@FirstSeat.Identifier"
+                     Class="h-100 rounded-lg border-solid border-1 mud-border-lines-default"
+                     Style="@(IsMergedIntoFirst ? "width: 100%;" : "width: 49.5%;")">
+            <ChildContent>
+                <MudStack Class="w-100" AlignItems="AlignItems.Center">
+                    <MudStack Row Class="w-100" Justify="Justify.SpaceEvenly"
+                              Style="border-bottom: 1px solid var(--mud-palette-divider); user-select: none !important;"
+                              @ondblclick="() => ToggleBlocked(FirstSeat)">
+                        <MudText Typo="Typo.subtitle2">
+                            @FirstSeat.Identifier
+                        </MudText>
+                        @if (IsMergedIntoFirst)
+                        {
+                            <MudText Typo="Typo.subtitle2">
+                                @SecondSeat.Identifier
+                            </MudText>
+                        }
+                    </MudStack>
+                    @if (FirstSeat.IsBlocked)
+                    {
+                        <MudText Typo="Typo.h4" Color="Color.Error">N/A</MudText>
+                    }
+                </MudStack>
+            </ChildContent>
+        </MudDropZone>
+        @if (!IsMergedIntoFirst)
+        {
+            <MudDropZone T="LanMember"
+                         Identifier="@SecondSeat.Identifier"
+                         Class="h-100 rounded-lg border-solid border-1 mud-border-lines-default"
+                         Style="width: 49.5%;"
+                         @ondblclick="@(() => ToggleBlocked(SecondSeat))">
+                <ChildContent>
+                    <MudStack Class="w-100" AlignItems="AlignItems.Center">
+                        <MudStack Class="w-100" AlignItems="AlignItems.Center"
+                                  Style="border-bottom: 1px solid var(--mud-palette-divider); user-select: none !important;">
+                            <MudText Typo="Typo.subtitle2">
+                                @SecondSeat.Identifier
+                            </MudText>
+                        </MudStack>
+                        @if (SecondSeat.IsBlocked)
+                        {
+                            <MudText Typo="Typo.h4" Color="Color.Error">N/A</MudText>
+                        }
+                    </MudStack>
+                </ChildContent>
+            </MudDropZone>
+        }
+    </MudStack>
+</MudPaper>
+
+@code {
+    [Parameter, EditorRequired] public required Seat FirstSeat { get; set; }
+
+    [Parameter, EditorRequired] public required Seat SecondSeat { get; set; }
+
+    [Parameter, EditorRequired] public required SeatingRow Row { get; set; }
+
+    [Inject] private SeatingConfigurationService SeatingConfigurationService { get; set; } = null!;
+
+    private bool IsMergedIntoFirst =>
+        MemberHandler.LanMembers.Any(m => m.Seat == FirstSeat.Identifier && m.IsDoubleSeat);
+
+    private void ToggleBlocked(Seat seat)
+    {
+        Row.ToggleBlocked(seat.SeatNumber);
+        SeatingConfigurationService.UpdateRow(Row);
+        InvokeAsync(StateHasChanged);
+    }
+
+}

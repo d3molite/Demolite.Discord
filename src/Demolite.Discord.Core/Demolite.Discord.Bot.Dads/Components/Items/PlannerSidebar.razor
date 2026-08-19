@@ -1,0 +1,84 @@
+@using Demolite.Discord.Bot.Dads.Services
+@inject LanMemberHandler MemberHandler
+@inject SeatingConfigurationService SeatingConfigurationService
+
+<MudPaper Class="d-flex flex-column h-100 pa-2" Style="width: 260px;" Elevation="1">
+    <MudText Typo="Typo.subtitle2">Reihen</MudText>
+    <MudDataGrid T="SeatingRow" Items="SeatingConfigurationService.Rows"
+                 Class="flex-grow-1" EditMode="DataGridEditMode.Form"
+                 ReadOnly="false" 
+                 Dense="true" 
+                 EditTrigger="DataGridEditTrigger.Manual"
+                 CommittedItemChanged="SeatingConfigurationService.UpdateRow">
+        <Columns>
+            <TemplateColumn Title="Name">
+                <CellTemplate>
+                    <MudText>@context.Item.Letter-@context.Item.StartingSeat</MudText>
+                </CellTemplate>
+            </TemplateColumn>
+            <TemplateColumn>
+                <EditTemplate>
+                    <MudStack>
+                        <MudTextField @bind-Value="context.Item.Letter" Label="Buchstabe (Reihe)"/>
+                        <MudNumericField T="int" @bind-Value="context.Item.StartingSeat" Label="Startnummer der Reihe"/>
+                        <MudNumericField T="int" @bind-Value="context.Item.Order" Label="Reihenfolge"/>
+                        <MudSelect @bind-Value="context.Item.CarpetPosition" Label="Relaxzone?">
+                            <MudSelectItem Value="CarpetPosition.None">Keine</MudSelectItem>
+                            <MudSelectItem Value="CarpetPosition.Top">Oben</MudSelectItem>
+                            <MudSelectItem Value="CarpetPosition.Bottom">Unten</MudSelectItem>
+                            <MudSelectItem Value="CarpetPosition.Both">Beides</MudSelectItem>
+                        </MudSelect>
+                    </MudStack>
+                </EditTemplate>
+                <CellTemplate>
+                    <MudStack Row="true" Spacing="0" Style="width: 80%; margin: 0 -0.5rem;">
+                        <MudIconButton Icon="@Icons.Material.Outlined.Edit" Color="Color.Primary" Size="Size.Small" OnClick="@context.Actions.StartEditingItemAsync"/>
+                        <MudIconButton Icon="@Icons.Material.Outlined.Delete" Color="Color.Error" Size="Size.Small" @onclick="() => SeatingConfigurationService.RemoveRow(context.Item)"/>
+                    </MudStack>
+                </CellTemplate>
+            </TemplateColumn>
+        </Columns>
+    </MudDataGrid>
+
+    <MudStack Row="true" Spacing="1" Class="mt-2">
+        <MudTextField @bind-Value="_newLetter" Label="Buchstabe" Immediate="true"/>
+        <MudNumericField @bind-Value="_newStartingSeat" Label="Start" Immediate="true"/>
+    </MudStack>
+    <MudButton Variant="Variant.Outlined" Size="Size.Small" Class="mt-1" OnClick="AddRow">Reihe hinzufügen</MudButton>
+
+    <MudDivider Class="my-3"/>
+
+    <MudText Typo="Typo.subtitle2">Nicht zugeordnet (@UnassignedMembers.Count())</MudText>
+    <MudDropZone T="LanMember" Identifier="" Class="flex-grow-1 rounded-lg border-dashed border-1 mud-border-lines-default"
+                 Style="overflow-y: auto; max-height:60% !important;">
+        <ItemRenderer>
+            <MudStack Row="true" AlignItems="AlignItems.Center" Class="pa-1" Style="@GroupBackgroundStyle(context)">
+                <MudText Typo="Typo.body2">@context.UsernameForDisplay</MudText>
+            </MudStack>
+            <MudDivider/>
+        </ItemRenderer>
+    </MudDropZone>
+</MudPaper>
+
+@code {
+    private string _newLetter = string.Empty;
+    private int _newStartingSeat = 1;
+
+    private IEnumerable<LanMember> UnassignedMembers =>
+        MemberHandler.LanMembers.Where(m => string.IsNullOrEmpty(m.Seat));
+
+    private void AddRow()
+    {
+        if (string.IsNullOrWhiteSpace(_newLetter)) return;
+
+        SeatingConfigurationService.AddRow(_newLetter, _newStartingSeat);
+        _newLetter = string.Empty;
+    }
+
+    private static string GroupBackgroundStyle(LanMember member)
+    {
+        if (string.IsNullOrWhiteSpace(member.Group)) return "";
+        var hue = Math.Abs(member.Group.GetHashCode()) % 360;
+        return $"background: hsl({hue}, 55%, 35%);";
+    }
+}

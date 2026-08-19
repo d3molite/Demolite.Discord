@@ -1,0 +1,43 @@
+@page "/Members"
+@using Demolite.Discord.Bot.Dads.Services
+
+<MudStack Class="mh-f-100">
+    <MudStack Row="true">
+        <MudButton OnClick="@LoadLanMembers" Variant="Variant.Outlined">Load From Db</MudButton>
+        <MudButton OnClick="@UpdateFromDiscord" Variant="Variant.Outlined">Load From Discord</MudButton>
+        <MudButton OnClick="@SaveLanMembers" Variant="Variant.Outlined">Save Members</MudButton>
+    </MudStack>
+    <MudDataGrid Items="MemberHandler.LanMembers" Class="mh-f-100-scroll" Dense="false" EditMode="DataGridEditMode.Cell" ReadOnly="false">
+        <Columns>
+            <PropertyColumn Property="x => x.Username" Title="User Name"/>
+            <PropertyColumn Property="x => x.UsernameForDisplay" Title="Display Name"/>
+            <PropertyColumn Property="x => x.IsDoubleSeat" Editable="false" Title="Double Seat"/>
+            <PropertyColumn Property="x => x.PersonalName" Editable="true" Title="Personal Name"/>
+            <PropertyColumn Property="x => x.Group" Editable="true" Title="Gruppe" Groupable="true" GroupExpanded="true"/>
+        </Columns>
+    </MudDataGrid>
+</MudStack>
+
+@code {
+
+    [Inject] public LanMemberHandler MemberHandler { get; set; } = null!;
+
+    private async Task LoadLanMembers()
+    {
+        MemberHandler.LoadLanMembersFromDatabase();
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private async Task UpdateFromDiscord()
+    {
+        await MemberHandler.UpdateLanMembersFromDiscord();
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private async Task SaveLanMembers()
+    {
+        MemberHandler.SaveLanMembers();
+        await InvokeAsync(StateHasChanged);
+    }
+
+}

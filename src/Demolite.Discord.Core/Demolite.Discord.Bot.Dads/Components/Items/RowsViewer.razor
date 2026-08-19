@@ -1,0 +1,27 @@
+@using Demolite.Discord.Bot.Dads.Services
+<MudStack Class="h-100 w-100" Style="overflow-y: auto; min-width: 0;" Spacing="10" Justify="Justify.Center">
+    @foreach (var row in Rows.OrderBy(row => row.Order))
+    {
+        <MudStack Class="w-100" AlignItems="AlignItems.Center" Spacing="2">
+            @if (row.CarpetPosition is CarpetPosition.Top or CarpetPosition.Both)
+            {
+                <CarpetStrip/>
+            }
+            <MudStack Class="w-100" Row="true" Wrap="Wrap.Wrap" Justify="Justify.Center" Spacing="2">
+                @foreach (var table in row.GetSeats().Chunk(2))
+                {
+                    <SeatingTable FirstSeat="table[0]" SecondSeat="table[1]" Row="row"/>
+                }
+            </MudStack>
+            @if (row.CarpetPosition is CarpetPosition.Bottom or CarpetPosition.Both)
+            {
+                <CarpetStrip/>
+            }
+        </MudStack>
+    }
+</MudStack>
+
+@code {
+    [Parameter, EditorRequired] 
+    public required List<SeatingRow> Rows { get; set; }
+}

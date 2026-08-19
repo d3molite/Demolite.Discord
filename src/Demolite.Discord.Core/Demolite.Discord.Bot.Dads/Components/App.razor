@@ -8,14 +8,18 @@
     <ResourcePreloader/>
     <link rel="stylesheet" href="@Assets["app.css"]"/>
     <link rel="stylesheet" href="@Assets["Demolite.Discord.Bot.Dads.styles.css"]"/>
+    <link rel="stylesheet" href="@Assets["css/bootstrap.min.css"]"/>
+    <link href="@Assets["_content/MudBlazor/MudBlazor.min.css"]" rel="stylesheet" />
+    <link rel="stylesheet" href="@Assets["mud-override.css"]"/>
     <ImportMap/>
     <HeadOutlet/>
 </head>
 
 <body>
-<Routes/>
+<Routes @rendermode="InteractiveServer"/>
 <ReconnectModal/>
 <script src="@Assets["_framework/blazor.web.js"]"></script>
+<script src="@Assets["_content/MudBlazor/MudBlazor.min.js"]"></script>
 </body>
 
 </html>

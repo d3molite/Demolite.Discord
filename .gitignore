@@ -11,3 +11,4 @@ riderModule.iml
 
 # SECURITY
 **/appsettings.json
+*.db
