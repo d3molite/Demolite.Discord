@@ -1,3 +1,4 @@
+using Demolite.Discord.Core.Bot.Handlers.Feedback;
 using Demolite.Discord.Core.Bot.Handlers.Voice;
 using Demolite.Discord.Core.Helpers.Cache;
 using Demolite.Discord.Core.Helpers.Voice;
@@ -17,5 +18,11 @@ public static class HandlerExtensions
         collection.AddGatewayHandler<CustomVoiceChannelHandler>();
         collection.AddGatewayHandler<VoiceChannelRecoveryHandler>();
         collection.AddSingleton<VoiceChannelRenameAccessChecker>();
+    }
+
+    public static void RegisterFeedbackServices(this IServiceCollection collection)
+    {
+        collection.AddGatewayHandler<FeedbackRegistrationHandler>();
+        collection.AddGatewayHandler<FeedbackInteractionHandler>();
     }
 }

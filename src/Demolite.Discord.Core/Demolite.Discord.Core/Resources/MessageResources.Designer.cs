@@ -60,6 +60,33 @@ namespace Demolite.Discord.Core.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Send feedback to the server team.
+        /// </summary>
+        public static string Body_FeedbackCommandDescription {
+            get {
+                return ResourceManager.GetString("Body_FeedbackCommandDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your feedback.
+        /// </summary>
+        public static string Body_FeedbackOptionDescription {
+            get {
+                return ResourceManager.GetString("Body_FeedbackOptionDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Thank you for your feedback..
+        /// </summary>
+        public static string Body_FeedbackThanks {
+            get {
+                return ResourceManager.GetString("Body_FeedbackThanks", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Use the button to rename this channel..
         /// </summary>
         public static string Body_VoiceRename_Message {
@@ -83,6 +110,24 @@ namespace Demolite.Discord.Core.Resources {
         public static string Body_VoiceRename_Success {
             get {
                 return ResourceManager.GetString("Body_VoiceRename_Success", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Feedback from {0} on {1}.
+        /// </summary>
+        public static string Header_Feedback {
+            get {
+                return ResourceManager.GetString("Header_Feedback", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Feedback.
+        /// </summary>
+        public static string Header_FeedbackModal {
+            get {
+                return ResourceManager.GetString("Header_FeedbackModal", resourceCulture);
             }
         }
         

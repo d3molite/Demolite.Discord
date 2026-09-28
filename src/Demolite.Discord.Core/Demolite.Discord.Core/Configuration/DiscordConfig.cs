@@ -54,4 +54,6 @@ public class ToolsConfig
 	public bool? VoiceChannelRenameAllowed { get; set; }
 
 	public int VoiceChannelDeleteDelaySeconds { get; set; } = 60;
+	
+	public ulong? FeedbackChannelId { get; set; }
 }

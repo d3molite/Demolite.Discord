@@ -29,4 +29,19 @@
         <data name="Body_VoiceRename_Success" xml:space="preserve">
         <value>Kanal umbenannt.</value>
     </data>
+    <data name="Header_Feedback" xml:space="preserve">
+        <value>Feedback von {0} am {1}</value>
+    </data>
+    <data name="Body_FeedbackThanks" xml:space="preserve">
+        <value>Vielen Dank für dein Feedback.</value>
+    </data>
+    <data name="Body_FeedbackCommandDescription" xml:space="preserve">
+        <value>Sende Feedback an das Server-Team</value>
+    </data>
+    <data name="Body_FeedbackOptionDescription" xml:space="preserve">
+        <value>Dein Feedback</value>
+    </data>
+    <data name="Header_FeedbackModal" xml:space="preserve">
+        <value>Feedback</value>
+    </data>
 </root>

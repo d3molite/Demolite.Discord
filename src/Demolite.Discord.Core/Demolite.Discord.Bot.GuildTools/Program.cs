@@ -35,6 +35,7 @@ builder.Services.AddGatewayHandler<NicknameChangeHandler>();
 builder.Services.AddComponentInteractions<ModalInteraction, ModalInteractionContext>();
 builder.Services.AddComponentInteractions<ButtonInteraction, ButtonInteractionContext>();
 builder.Services.RegisterVoiceServices();
+builder.Services.RegisterFeedbackServices();
 
 var host = builder.Build();
 host.AddModules(typeof(VoiceChannelRenameButtonModule).Assembly);
