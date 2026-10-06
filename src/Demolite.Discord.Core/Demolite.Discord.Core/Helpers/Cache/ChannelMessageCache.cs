@@ -17,6 +17,12 @@ public sealed class ChannelMessageCache(int capacityPerChannel = 300)
 		cache.Add(message);
 	}
 
+	public void Replace(Message message)
+	{
+		if (_channels.TryGetValue(message.ChannelId, out var cache))
+			cache.Replace(message);
+	}
+
 	public bool TryGet(ulong channelId, ulong messageId, [NotNullWhen(true)] out Message? message)
 	{
 		message = null;

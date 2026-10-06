@@ -11,6 +11,9 @@ namespace Demolite.Discord.Core.Services;
 
 public partial class LoggingService
 {
+	private static readonly TimeSpan RecentEditWindow = TimeSpan.FromMinutes(5);
+
+
 	public async Task LogMessageDeleted(ulong guildId, ulong channelId, ulong messageId)
 	{
 		var culture = GetLoggingCulture(guildId);
@@ -144,15 +147,26 @@ public partial class LoggingService
 
 		if (!cache.TryGet(editedMessage.ChannelId, editedMessage.Id, out var originalMessage))
 		{
+			if (!IsRecentEdit(editedMessage))
+				return;
+
 			await LogCritical(editedMessage.GuildId!.Value, [MessageEditedEmbed(editedMessage)]);
+			cache.Add(editedMessage);
 			return;
 		}
 
 		if (originalMessage.Content == editedMessage.Content)
 			return;
 
-		await LogCritical(editedMessage.GuildId!.Value, [MessageEditedEmbed(editedMessage, originalMessage).CreateLogEmbed()]);
+		await LogCritical(editedMessage.GuildId!.Value, [MessageEditedEmbed(editedMessage, originalMessage)]);
+		cache.Replace(editedMessage);
 	}
+
+	/// <summary>
+	/// Checks whether the message was edited within the allowed edit window.
+	/// </summary>
+	private static bool IsRecentEdit(Message message)
+		=> message.EditedAt is { } editedAt && DateTimeOffset.UtcNow - editedAt <= RecentEditWindow;
 
 	private EmbedProperties MessageEditedEmbed(Message editedMessage, Message? originalMessage = null)
 	{
@@ -191,8 +205,9 @@ public partial class LoggingService
 		}
 		
 		fields.AddField(
-			Resources.GetResource(_ => LoggingResource.Header_Actions, locale), 
-			$"[{Resources.GetResource(_ => LoggingResource.Body_Actions_LinkToMessage, locale)}]({editedMessage.ToMessageLink()})");
+			Resources.GetResource(_ => LoggingResource.Header_Actions, locale),
+			$"[{Resources.GetResource(_ => LoggingResource.Body_Actions_LinkToMessage, locale)}]({editedMessage.ToMessageLink()})"
+			+ (originalMessage is null ? string.Empty : $"{Environment.NewLine}{originalMessage.CreatedAt.ToDiscordTimestamps()}"));
 
 		return fields.ToArray()
 			.CreateLogEmbed();

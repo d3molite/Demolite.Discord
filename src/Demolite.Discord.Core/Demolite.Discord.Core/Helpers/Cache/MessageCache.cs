@@ -25,6 +25,15 @@ internal sealed class MessageCache(int capacity)
 		}
 	}
 
+	public void Replace(Message message)
+	{
+		lock (_lock)
+		{
+			if (_messages.ContainsKey(message.Id))
+				_messages[message.Id] = message;
+		}
+	}
+
 	public bool TryGet(ulong id, out Message? message)
 	{
 		lock (_lock)

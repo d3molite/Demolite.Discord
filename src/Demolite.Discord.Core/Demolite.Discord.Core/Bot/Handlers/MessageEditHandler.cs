@@ -8,7 +8,7 @@ public class MessageEditHandler(ILoggingService loggingService) : IMessageUpdate
 {
 	public async ValueTask HandleAsync(Message arg)
 	{
-		if (arg.GuildId is null)
+		if (arg.GuildId is null || string.IsNullOrWhiteSpace(arg.Content))
 			return;
 		
 		await loggingService.LogMessageUpdated(arg);

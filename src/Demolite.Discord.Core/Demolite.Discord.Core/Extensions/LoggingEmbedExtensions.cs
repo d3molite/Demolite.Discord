@@ -23,6 +23,15 @@ public static class LoggingEmbedExtensions
 	public static string ToMessageLink(this Message message)
 		=> $"https://discord.com/channels/{message.GuildId}/{message.ChannelId}/{message.Id}";
 
+	/// <summary>
+	/// Formats the time as an absolute and a relative Discord timestamp on separate lines.
+	/// </summary>
+	public static string ToDiscordTimestamps(this DateTimeOffset time)
+	{
+		var unixSeconds = time.ToUnixTimeSeconds();
+		return $"<t:{unixSeconds}:f>{Environment.NewLine}<t:{unixSeconds}:R>";
+	}
+
 	public static string EmbedUser(this Message message)
 	{
 		return EmbedUser(message.Author);
