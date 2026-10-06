@@ -25,10 +25,17 @@ public class SeatingRow
 
 public static class SeatingRowExtensions
 {
-    public static IReadOnlyList<Seat> GetSeats(this SeatingRow row) =>
-        Enumerable.Range(row.StartingSeat, 40)
+    public static IReadOnlyList<Seat> GetSeats(this SeatingRow row)
+    {
+        var seats = Enumerable.Range(row.StartingSeat, 40)
             .Select(n => new Seat(row.Letter, n, row.BlockedSeatNumbers.Contains(n)))
             .ToList();
+
+        var firstHalf = seats.Take(20);
+        var secondHalf = seats.Skip(20);
+
+        return secondHalf.Concat(firstHalf).ToList();
+    }
 
     public static void ToggleBlocked(this SeatingRow row, int seatNumber)
     {
