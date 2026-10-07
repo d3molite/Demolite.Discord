@@ -1,134 +1,133 @@
 using Demolite.Discord.Core.Configuration;
-using Demolite.Discord.Core.Interfaces;
-using NetCord;
 using NetCord.Gateway;
-using NetCord.Rest;
 using Serilog;
 
 namespace Demolite.Discord.Core.Helpers.AntiSpam;
 
-public class AntiSpamHelper(
-	RestClient restClient,
-	RestGuild guild,
-	GuildConfig[] guildConfigs,
-	ILoggingService loggingService
-)
+public class AntiSpamHelper(GuildConfig[] guildConfigs, SpamPunisher punisher)
 {
-	private Dictionary<ulong, MessageQueue> _userMessages = [];
+	private const int MaxMessagesPerUser = 10;
 
-	private readonly List<SpamHandler> _spamHandlers = [];
+	private static readonly TimeSpan MessageLifetime = TimeSpan.FromMinutes(5);
+	private static readonly TimeSpan DeleteDelay = TimeSpan.FromSeconds(2);
 
-	private IEnumerable<ulong> HoneyPots => guildConfigs.Where(x => x.GuardConfig?.HoneyPotChannelId != null)
-		.Select(x => x.GuardConfig!.HoneyPotChannelId!.Value);
+	private readonly object _lock = new();
+	private readonly Dictionary<GuildUser, List<Message>> _recentMessages = [];
+	private readonly Dictionary<GuildUser, List<Message>> _pendingPunishments = [];
 
-	public void CleanupQueues()
+	private readonly HashSet<ulong> _honeyPots = [..guildConfigs.Select(x => x.GuardConfig?.HoneyPotChannelId).OfType<ulong>()];
+
+	/// <summary>
+	/// Tracks the message and starts a single punishment per user as soon as spam is detected.
+	/// </summary>
+	public void CheckForSpam(Message message)
 	{
-		foreach (var kvp in _userMessages)
-		{
-			kvp.Value.DequeueOldItems();
-		}
-	}
-
-	public Task CheckForSpam(Message message)
-	{
-		if (IgnoreMessage(message))
-			return Task.CompletedTask;
-
-		var existingHandler = _spamHandlers.FirstOrDefault(x => x.User == message.Author);
-
-		if (existingHandler != null)
-		{
-			AddToRunning(existingHandler, message);
-			return Task.CompletedTask;
-		}
-
-		EnqueueMessage(message);
-		return Task.CompletedTask;
-	}
-
-	private static void AddToRunning(SpamHandler existingHandler, Message message)
-		=> existingHandler.MessageQueue.ForceEnqueue(message);
-
-	private void EnqueueMessage(Message message)
-	{
-		if (_userMessages.TryGetValue(message.Author.Id, out var messageQueue))
-		{
-			messageQueue.Enqueue(message);
-			CheckQueueForSpam(messageQueue, message.Author);
+		if (message.GuildId is not { } guildId || IsExcluded(message))
 			return;
-		}
 
-		var queue = new MessageQueue(10);
-		queue.Enqueue(message);
-		_userMessages.Add(message.Author.Id, queue);
-		CheckQueueForSpam(queue, message.Author);
-	}
-
-	private void CheckQueueForSpam(MessageQueue queue, User user)
-	{
-		if (queue.Queue.Any(IsHoneyPotMessage))
+		lock (_lock)
 		{
-			StartSpamHandler(queue, user);
-			return;
-		}
+			var key = new GuildUser(guildId, message.Author.Id);
 
-		if (ContainsSpam(queue))
+			if (_pendingPunishments.TryGetValue(key, out var pending))
+			{
+				pending.Add(message);
+				return;
+			}
+
+			var recent = GetRecentMessages(key);
+			recent.Add(message);
+
+			if (recent.Count > MaxMessagesPerUser)
+				recent.RemoveAt(0);
+
+			if (!IsSpam(recent))
+				return;
+
+			_recentMessages.Remove(key);
+			_pendingPunishments[key] = recent;
+			_ = PunishAfterDelayAsync(key, message.Author, recent);
+		}
+	}
+
+	/// <summary>
+	/// Removes expired messages and users without remaining messages.
+	/// </summary>
+	public void RemoveExpiredMessages()
+	{
+		lock (_lock)
 		{
-			StartSpamHandler(queue, user);
+			var oldestAllowed = DateTimeOffset.UtcNow - MessageLifetime;
+
+			foreach (var (key, messages) in _recentMessages)
+			{
+				messages.RemoveAll(x => x.CreatedAt < oldestAllowed);
+
+				if (messages.Count == 0)
+					_recentMessages.Remove(key);
+			}
 		}
 	}
 
-	private void StartSpamHandler(MessageQueue queue, User user)
-	{
-		var handler = new SpamHandler(restClient, guild, user, queue, loggingService);
-
-		handler.SpamDeleted += Cleanup;
-		_spamHandlers.Add(handler);
-	}
-
-	private void Cleanup(object? sender, EventArgs e)
-	{
-		if (sender is SpamHandler handler)
-			_spamHandlers.Remove(handler);
-	}
-
-	private bool IgnoreMessage(Message message)
+	private async Task PunishAfterDelayAsync(GuildUser key, NetCord.User user, List<Message> pending)
 	{
 		try
 		{
-			var config = guildConfigs.FirstOrDefault(x => x.Id == message.GuildId);
+			// Collect messages which arrive while the spam is still running.
+			await Task.Delay(DeleteDelay);
 
-			if (config is null)
-				return false;
+			await punisher.TimeOutAsync(key.GuildId, user);
 
-			if (config.GuardConfig?.AntispamExceptions.Any(x => message.Content.StartsWith(x)) == true)
-				return true;
+			var batch = TakeUnhandledMessages(key, pending);
+
+			while (batch.Length > 0)
+			{
+				await punisher.DeleteMessagesAsync(batch);
+				batch = TakeUnhandledMessages(key, pending);
+			}
+
+			Log.Information("Spam detected by {User}", user);
 		}
 		catch (Exception ex)
 		{
-			Log.Error(ex, "Error checking for antispam exceptions in guild {GuildId}", message.GuildId);
+			Log.Error(ex, "Could not punish spam by {User}", user);
 		}
-
-		return false;
 	}
 
-	private bool IsHoneyPotMessage(Message message)
-		=> HoneyPots.Contains(message.ChannelId);
-
-	private static bool ContainsSpam(MessageQueue queue)
+	/// <summary>
+	/// Removes and returns the pending messages. Ends the pending state once none are left.
+	/// </summary>
+	private Message[] TakeUnhandledMessages(GuildUser key, List<Message> pending)
 	{
-		var isSpamByMessage = queue.Queue.Where(x => !string.IsNullOrEmpty(x.Content))
-			.GroupBy(message => message.Content)
-			.Any(group => group.Count() > 5);
+		lock (_lock)
+		{
+			var batch = pending.ToArray();
+			pending.Clear();
 
-		var isSpamByAttachment = queue.Queue.Where(message => message.Attachments.Count > 0)
-			.GroupBy(message => string.Join("", message.Attachments.Select(x => x.FileName)))
-			.Any(group => group.Count() > 5);
+			if (batch.Length == 0)
+				_pendingPunishments.Remove(key);
 
-		var isSpamByStickers = queue.Queue.Where(message => message.Stickers.Count > 0)
-			.GroupBy(message => message.Stickers[0].Id)
-			.Any(group => group.Count() > 5);
-
-		return isSpamByMessage || isSpamByAttachment || isSpamByStickers;
+			return batch;
+		}
 	}
+
+	private List<Message> GetRecentMessages(GuildUser key)
+	{
+		if (_recentMessages.TryGetValue(key, out var messages))
+			return messages;
+
+		return _recentMessages[key] = [];
+	}
+
+	private bool IsSpam(List<Message> messages)
+		=> messages.Any(x => _honeyPots.Contains(x.ChannelId)) || SpamDetector.IsSpam(messages);
+
+	private bool IsExcluded(Message message)
+	{
+		var config = guildConfigs.FirstOrDefault(x => x.Id == message.GuildId);
+
+		return config?.GuardConfig?.AntispamExceptions.Any(x => message.Content.StartsWith(x)) == true;
+	}
+
+	private readonly record struct GuildUser(ulong GuildId, ulong UserId);
 }
